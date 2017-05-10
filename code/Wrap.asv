@@ -1,0 +1,30 @@
+clear;
+img_path = '../img/';
+path = dir([img_path '*.png']);
+n = length(path);
+
+IMG_LST = cell(1, n);
+IM
+IMG_KEY_POINT = cell(1, n);
+IMG_DESCRIPTOR = cell(1, n);
+for i = 1:n
+    name = [img_path path(i).name];
+    IMG_LST{1, i} = name;
+    img = im2single(rgb2gray(imread(name)));
+    [loc, des] = vl_sift(img);
+    loc = loc';
+    des = des';
+    loc = loc(1:end, 1:2);
+    IMG_KEY_POINT{i} = loc;
+    IMG_DESCRIPTOR{i} = des; 
+end
+size(IMG_KEY_POINT{1})
+size(IMG_KEY_POINT{2})
+SIFTMatch(IMG_KEY_POINT{1}, IMG_DESCRIPTOR{1}, IMG_KEY_POINT{2}, IMG_DESCRIPTOR{2});
+
+
+
+
+
+
+
