@@ -20,9 +20,9 @@ for i = 1:n
     IMG_KEY_POINT{i} = loc;
     IMG_DESCRIPTOR{i} = des; 
 end
-
-[loc1, loc2] = SIFTMatch(IMG_KEY_POINT{2}, IMG_DESCRIPTOR{2}, IMG_KEY_POINT{3}, IMG_DESCRIPTOR{3});
-PlotMatch(IMG{2}, IMG{3}, loc1, loc2);
+      
+[loc1, loc2] = SIFTMatch(IMG_KEY_POINT{1}, IMG_DESCRIPTOR{1}, IMG_KEY_POINT{2}, IMG_DESCRIPTOR{2});
+PlotMatch(IMG{1}, IMG{2}, loc1, loc2);
 
 
 
