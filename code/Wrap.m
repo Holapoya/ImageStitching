@@ -17,12 +17,22 @@ for i = 1:n
     loc = loc';
     des = des';
     loc = loc(1:end, 1:2);
+    [~, idx, ~] = unique(loc, 'rows', 'stable');
+    loc = loc(idx, :);
+    des = des(idx, :);
     IMG_KEY_POINT{i} = loc;
     IMG_DESCRIPTOR{i} = des; 
 end
       
 [loc1, loc2] = SIFTMatch(IMG_KEY_POINT{1}, IMG_DESCRIPTOR{1}, IMG_KEY_POINT{2}, IMG_DESCRIPTOR{2});
-PlotMatch(IMG{1}, IMG{2}, loc1, loc2);
+PlotMatch(IMG{1}, IMG{2}, loc1, loc2);  
+
+%ref_index = round((1 + n) / 2);
+[H, d] = findHomography(loc1, loc2, 1000)     
+
+
+
+
 
 
 
