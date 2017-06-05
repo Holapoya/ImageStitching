@@ -12,10 +12,12 @@ function [Homography, Dist] = findHomography(pt1, pt2, maxIter)
     %pt2_homo_T = toHomogeneous(pt2)';
     for it = 1:maxIter
         sample_indice = randsample(indice, 4);
-        sampple_pt1 = pt1(sample_indice, :);
+        sampple_pt1 = pt1(sample_indice, :);  
         sampple_pt2 = pt2(sample_indice, :);
         H = solveHomography(sampple_pt1, sampple_pt2);
         align_result = (H * pt1_homo_T)';
+        align_result(:, 1) = align_result(:, 1) ./ align_result(:, 3);
+        align_result(:, 2) = align_result(:, 2) ./ align_result(:, 3);
         align_result = align_result(:, 1:2);
         dist = sum(sqrt(sum((align_result - pt2).^2))) / n;
         if dist < best_dist
@@ -32,6 +34,11 @@ function [H] = solveHomography(pt1, pt2)
 %
     pt1_homo = toHomogeneous(pt1);
     pt2_homo = toHomogeneous(pt2);
+    H_t = (pt1_homo) \ (pt2_homo);
+    H = H_t';
+    %H(3, :) = [0 0 1];
+    %{
+    pt2_homo(:, 3) = 0;
     b = reshape(pt2_homo', [1, 12])';
     A = zeros([12, 8]);
     for i=1:4
@@ -41,4 +48,5 @@ function [H] = solveHomography(pt1, pt2)
     end
     x = A\b;
     H = reshape([x', 1], [3, 3])';
+    %}
 end
