@@ -83,7 +83,7 @@ classdef BundleAdjuster < handle
         function Run(obj)
             func = @(x0)Error(x0, obj);
             %options = optimoptions('lsqnonlin','Display','iter');
-            options = optimoptions('lsqnonlin','Display','iter', 'MaxFunEvals', 1000000, 'MaxIter', 100000);
+            options = optimoptions('lsqnonlin','Display','iter', 'MaxFunEvals', 1000000, 'MaxIter', 500);
             obj.x0 = lsqnonlin(func, obj.x0, [], [], options);
             obj.updateHomography(obj.x0);
         end
