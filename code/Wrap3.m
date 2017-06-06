@@ -51,7 +51,7 @@ end
 % end
 % 
 % T = bundle.getTransform(bundle.x0); 
-%save('T.mat', 'T');
+% %save('T.mat', 'T');
 
 tmp = load('T.mat');
 T = tmp.T;
@@ -63,7 +63,7 @@ end
 
 img = stitch.Stitch();
 
-imshow(img)
+%imshow(img)
 
 imwrite(img, 'result.png')
 

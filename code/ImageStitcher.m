@@ -47,36 +47,31 @@ classdef ImageStitcher < handle
                 obj.mapPos{i} = map_pos;
                 min_x_y = min([min_x_y; map_pos]);
                 max_x_y = max([max_x_y; map_pos]);
-            end
-            if min_x_y(1) <= 0
-                offset_x = -1 * min_x_y(1) + 1;
-            else
-                offset_x = 0;
-            end
-            if min_x_y(2) <= 0
-                offset_y = -1 * min_x_y(2) + 1;
-            else
-                offset_y = 0;
-            end
+            end       
+            i = 1;
+            img = obj.IMG{i};
+            t = maketform('projective', obj.T{i}');
+            result = imtransform(im2single(img), t, 'bicubic', ...
+            'XData', [min_x_y(1) max_x_y(1)], 'YData', [min_x_y(2) max_x_y(2)], 'FillValues', NaN, 'XYScale', 1);
             
-            new_width = max_x_y(1) + offset_x;
-            new_height = max_x_y(2) + offset_y;
-            
-            result = zeros([new_height new_width 3]);
-            for i = 1:obj.ncamera
-                map_pos = obj.mapPos{i};
-                map_pos(:, 1) = map_pos(:, 1) + offset_x;
-                map_pos(:, 2) = map_pos(:, 2) + offset_y;
+            for i = 2:obj.ncamera
+                img = obj.IMG{i};
+                t = maketform('projective', obj.T{i}');
+                img = imtransform(im2single(img), t, 'bicubic', ...
+                'XData', [min_x_y(1) max_x_y(1)], 'YData', [min_x_y(2) max_x_y(2)], 'FillValues', NaN, 'XYScale', 1);
+                result_mask = ~isnan(result(:, :, 1));
+                temp_mask = ~isnan(img(:, :, 1));
+                plot_mask = temp_mask & (~result_mask);
                 
-                image = obj.IMG{i};
-                for j = 1:(obj.width * obj.height)
-                    result(map_pos(j, 2), map_pos(j, 1), :) = image(posMat(j, 2), posMat(j, 1), :);
+                for ch = 1:3
+                    result_ch = result(:, :, ch);
+                    temp_ch = img(:, :, ch);
+                    result_ch(plot_mask) = temp_ch(plot_mask);
+                    result(:, :, ch) = result_ch;
                 end
             end
-            
-            result = uint8(result);
+            result(isnan(result)) = 0;
         end
     end
-    
 end
 
