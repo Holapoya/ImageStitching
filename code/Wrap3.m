@@ -1,6 +1,6 @@
 clear;
-img_path = '../img/mountain2/';
-path = dir([img_path '*.jpg']);
+img_path = '../img/test5/';
+path = dir([img_path '*.png']);
 n = length(path);
 
 IMG_LST = cell(1, n);
@@ -41,6 +41,7 @@ end
 %PlotMatch(IMG{1}, IMG{2}, loc1, loc2)
 H = {};
 for i = 2:n
+    IMG_LST{i}
     bundle = BundleAdjuster();
     bundle.AddShot([]); % add ref image
     for j = 2:(i - 1)
@@ -83,7 +84,7 @@ end
 
 img = stitch.Stitch();
 
-%imshow(img)
+imshow(img)
 
 imwrite(img, 'result.png')
 
