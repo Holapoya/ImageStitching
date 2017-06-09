@@ -1,6 +1,7 @@
 clear;
-img_path = '../img/test5/';
-path = dir([img_path '*.png']);
+a = 'test13';
+img_path = ['../img/' a '/'];
+path = dir([img_path '*.jpg']);
 n = length(path);
 
 IMG_LST = cell(1, n);
@@ -37,8 +38,9 @@ for i = 1:n
     IMG_KEY_POINT{i} = loc;
     IMG_DESCRIPTOR{i} = des; 
 end
-%[loc1, loc2] = SIFTMatch(IMG_KEY_POINT{1}, IMG_DESCRIPTOR{1}, IMG_KEY_POINT{2}, IMG_DESCRIPTOR{2});
-%PlotMatch(IMG{1}, IMG{2}, loc1, loc2)
+%[loc1, loc2] = SIFTMatch(IMG_KEY_POINT{2}, IMG_DESCRIPTOR{2}, IMG_KEY_POINT{3}, IMG_DESCRIPTOR{3});
+%PlotMatch(IMG{2}, IMG{3}, loc1, loc2);
+%error
 H = {};
 for i = 2:n
     IMG_LST{i}
@@ -86,7 +88,7 @@ img = stitch.Stitch();
 
 imshow(img)
 
-imwrite(img, 'result.png')
+imwrite(img, ['../result/result_' a '.png'])
 
 
 
