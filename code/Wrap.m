@@ -1,5 +1,5 @@
 clear;
-img_path = '../img/';
+img_path = '../img/mountain1/';
 path = dir([img_path '*.png']);
 n = length(path);
 
@@ -23,10 +23,14 @@ for i = 1:n
     IMG_KEY_POINT{i} = loc;
     IMG_DESCRIPTOR{i} = des; 
 end
-      
-%  [loc1, loc2] = SIFTMatch(IMG_KEY_POINT{1}, IMG_DESCRIPTOR{1}, IMG_KEY_POINT{2}, IMG_DESCRIPTOR{2});
-%  PlotMatch(IMG{1}, IMG{2}, loc1, loc2);  
-%  error('gg')
+
+%img = PlotSIFT(IMG{1}, IMG_KEY_POINT{1});
+%imwrite(img, 'sift.png')
+%error
+[loc1, loc2] = SIFTMatch(IMG_KEY_POINT{1}, IMG_DESCRIPTOR{1}, IMG_KEY_POINT{2}, IMG_DESCRIPTOR{2});
+PlotMatch(IMG{1}, IMG{2}, loc1, loc2);
+ %imwrite(img, 'match.jpg')
+error('gg')
 
 % %ref_index = round((1 + n) / 2);
 % [H, d] = findHomography(loc1, loc2, 1000)  
